@@ -3,99 +3,91 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Choose a numbered sorting investigation. Observe, predict and test the movement with your own number cards.">
-  <title>Sorting</title>
+  <meta name="description" content="CP12 and CS12 course topics. Find your topic, choose an investigation, and work through it at your own pace.">
+  <title>Course topics | CP12 / CS12</title>
   <style>
     :root { color-scheme:light; --ink:#173329; --muted:#607269; --paper:#f5f7f2; --line:#dce4da; --green:#24694c; }
     * { box-sizing:border-box; }
     body { margin:0; background:var(--paper); color:var(--ink); font:16px/1.55 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; }
-    main { max-width:1080px; margin:0 auto; padding:48px 24px 28px; }
+    main { max-width:1080px; margin:0 auto; padding:32px 24px 28px; }
+    .site-head { display:flex; align-items:center; justify-content:space-between; gap:20px; padding:10px 0 24px; border-bottom:1px solid var(--line); }
+    .brand { display:flex; align-items:center; gap:10px; font-size:.92rem; font-weight:750; }
+    .brand-mark { display:grid; place-items:center; width:34px; height:34px; background:var(--green); color:white; border-radius:9px; font-size:.9rem; }
+    .site-label { font-size:.83rem; color:var(--muted); }
+    .hero { padding:44px 0 34px; }
     .eyebrow { color:var(--green); font-size:.76rem; font-weight:750; letter-spacing:.15em; text-transform:uppercase; }
-    .hero { display:flex; align-items:center; justify-content:space-between; gap:32px; padding:18px 0 32px; }
-    h1 { margin:10px 0 14px; font-size:clamp(3.3rem,8vw,5.4rem); letter-spacing:-.065em; line-height:1.03; font-weight:750; }
-    .intro { color:var(--muted); max-width:470px; margin:0; font-size:1.05rem; }
-    .hero-cards { display:flex; gap:9px; flex-shrink:0; padding:32px 12px; }
-    .hero-cards span { display:grid; place-items:center; width:52px; height:76px; border:1px solid #bacbb9; border-radius:10px; background:#e9efe3; font-size:1.7rem; font-weight:650; box-shadow:0 7px 0 #e1e8dc; }
-    .hero-cards span:nth-child(2) { transform:translateY(-12px) rotate(-6deg); background:#f8e5b4; }
-    .hero-cards span:nth-child(4) { transform:translateY(8px) rotate(5deg); background:#d8e9d7; }
-    .instructions { display:flex; gap:24px; flex-wrap:wrap; padding:18px 0; border-top:1px solid var(--line); border-bottom:1px solid var(--line); margin-bottom:36px; }
-    .instructions p { display:flex; align-items:center; gap:9px; margin:0; color:var(--muted); font-size:.88rem; }
-    .instructions b { display:grid; place-items:center; flex-shrink:0; width:24px; height:24px; border-radius:50%; background:#e6eddf; color:var(--green); font-size:.76rem; }
-    .section-head { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:16px; }
-    h2 { margin:0; font-size:1.2rem; letter-spacing:-.02em; }
-    .section-head p { margin:0; color:var(--muted); font-size:.85rem; }
-    .activities { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:18px; }
-    .activity { display:flex; flex-direction:column; min-height:285px; padding:24px; border:1px solid var(--line); border-radius:16px; background:white; }
-    a.activity { color:inherit; text-decoration:none; box-shadow:0 4px 16px #1c352607; transition:transform .16s,border-color .16s,box-shadow .16s; }
-    a.activity:hover { transform:translateY(-4px); border-color:#80a88a; box-shadow:0 10px 24px #1c35260c; }
-    a.activity:focus-visible { outline:3px solid #387dc2; outline-offset:5px; }
-    .card-top { display:flex; align-items:center; justify-content:space-between; margin-bottom:27px; }
-    .sequence { display:grid; place-items:center; width:48px; height:48px; border:1px solid #ceddc9; border-radius:11px; background:#eef3e8; color:var(--green); font-size:1.2rem; font-weight:700; }
-    .badge { color:var(--green); background:#edf4e9; padding:4px 9px; border-radius:20px; font-size:.72rem; font-weight:650; }
-    h3 { margin:0 0 8px; font-size:1.42rem; letter-spacing:-.035em; }
-    .activity p { margin:0 0 24px; color:var(--muted); font-size:.91rem; }
-    .open { display:flex; align-items:center; justify-content:space-between; margin-top:auto; color:var(--green); font-size:.9rem; font-weight:700; }
-    .open span:last-child { font-size:1.25rem; line-height:1; }
+    h1 { margin:10px 0 16px; font-size:clamp(2.7rem,6vw,4.6rem); letter-spacing:-.06em; line-height:1.08; }
+    .intro { color:var(--muted); max-width:650px; margin:0; font-size:1.05rem; }
+    .path { display:flex; align-items:center; gap:13px; flex-wrap:wrap; margin-top:25px; font-size:.82rem; }
+    .path span { border:1px solid var(--line); padding:7px 11px; background:#edf2e7; border-radius:8px; }
+    .path i { font-style:normal; color:#8a9a87; }
+    .section-head { display:flex; align-items:center; justify-content:space-between; gap:14px; margin:5px 0 18px; }
+    h2 { margin:0; font-size:1.18rem; letter-spacing:-.025em; }
+    .section-head p { margin:0; font-size:.85rem; color:var(--muted); }
+    .topics { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:18px; }
+    .topic { display:flex; flex-direction:column; min-height:315px; padding:25px; border:1px solid var(--line); border-radius:16px; background:white; }
+    a.topic { color:inherit; text-decoration:none; box-shadow:0 5px 20px #1c352607; transition:transform .16s,border-color .16s; }
+    a.topic:hover { transform:translateY(-4px); border-color:#80a88a; }
+    a.topic:focus-visible { outline:3px solid #387dc2; outline-offset:5px; }
+    .card-head { display:flex; justify-content:space-between; gap:8px; align-items:center; margin-bottom:25px; }
+    .icon { display:flex; align-items:flex-end; gap:4px; width:43px; height:43px; padding:9px; border-radius:10px; background:#eaf1e3; color:var(--green); }
+    .icon i { display:block; width:6px; background:var(--green); border-radius:2px 2px 0 0; }
+    .icon i:nth-child(1) { height:16px; } .icon i:nth-child(2) { height:9px; } .icon i:nth-child(3) { height:23px; }
+    .icon-text { display:grid; place-items:center; font-style:normal; font-weight:700; font-size:1.02rem; padding:0; }
+    .badge { background:#edf4e9; color:var(--green); border-radius:20px; padding:4px 9px; font-size:.7rem; font-weight:700; }
+    h3 { margin:0 0 9px; font-size:1.5rem; letter-spacing:-.035em; }
+    .topic p { margin:0; color:var(--muted); font-size:.92rem; }
+    .meta { margin-top:17px; font-size:.78rem; color:var(--muted); }
+    .open { display:flex; justify-content:space-between; align-items:center; margin-top:auto; padding-top:25px; color:var(--green); font-size:.9rem; font-weight:700; }
     .upcoming { background:#f0f3ed; border-style:dashed; }
-    .upcoming .sequence { background:#e8ede3; border-color:#d6dfd1; color:#7e8e7e; }
-    .upcoming h3 { color:#768574; }
-    .upcoming .badge { color:#6d7c6c; background:#e7ece2; }
-    .upcoming p,.upcoming .open { color:#7a8777; }
-    .note { display:flex; gap:12px; margin-top:28px; padding:18px 20px; border:1px solid #d8e4d4; border-radius:12px; background:#eaf0e3; }
-    .note strong { font-size:.93rem; }
-    .note p { margin:3px 0 0; color:var(--muted); font-size:.87rem; }
-    .note-mark { display:grid; place-items:center; flex-shrink:0; width:28px; height:28px; border-radius:50%; background:var(--green); color:white; font-weight:700; }
-    footer { border-top:1px solid var(--line); margin-top:38px; padding-top:18px; color:var(--muted); font-size:.8rem; }
-    @media(max-width:800px) { .hero-cards span { width:39px; height:61px; font-size:1.35rem; } .hero-cards { gap:6px; padding-right:0; } .activities { grid-template-columns:repeat(2,minmax(0,1fr)); } }
-    @media(max-width:580px) { main { padding:28px 18px 24px; } .hero { display:block; padding-top:14px; } .hero-cards { padding:30px 0 10px; } .hero-cards span { width:44px; height:63px; } .activities { grid-template-columns:1fr; } .activity { min-height:250px; } .instructions { gap:12px; margin-bottom:28px; } .instructions p { width:100%; } .section-head { align-items:flex-start; flex-direction:column; gap:4px; } }
-    @media(prefers-reduced-motion:reduce) { a.activity { transition:none; } a.activity:hover { transform:none; } }
+    .upcoming h3,.upcoming .open,.upcoming .icon { color:#7a8777; }
+    .upcoming .icon { background:#e7ece2; }
+    .upcoming .badge { background:#e7ece2; color:#6d7c6c; }
+    .note { display:flex; align-items:flex-start; gap:14px; background:#eaf0e3; border:1px solid #d8e4d4; border-radius:12px; padding:20px; margin-top:25px; }
+    .note-mark { display:grid; place-items:center; flex-shrink:0; width:27px; height:27px; border-radius:50%; background:var(--green); color:white; font-weight:700; }
+    .note strong { font-size:.94rem; }
+    .note p { color:var(--muted); margin:3px 0 0; font-size:.87rem; }
+    footer { border-top:1px solid var(--line); margin-top:36px; padding-top:18px; color:var(--muted); font-size:.8rem; }
+    @media(max-width:800px) { .topics { grid-template-columns:repeat(2,minmax(0,1fr)); } }
+    @media(max-width:580px) { main { padding:22px 18px; } .site-head { align-items:flex-start; } .site-label { max-width:135px; text-align:right; } .hero { padding:32px 0 28px; } .topics { grid-template-columns:1fr; } .topic { min-height:275px; } .section-head { align-items:flex-start; flex-direction:column; gap:4px; } .path { gap:7px; font-size:.76rem; } }
+    @media(prefers-reduced-motion:reduce) { a.topic { transition:none; } a.topic:hover { transform:none; } }
   </style>
 </head>
 <body>
 <main>
-  <header>
-    <div class="eyebrow">CP12 / CS12 · Number investigations</div>
-    <div class="hero">
-      <div>
-        <h1>Sorting</h1>
-        <p class="intro">Different movements. Different rules.<br>Choose the investigation assigned by your teacher.</p>
-      </div>
-      <div class="hero-cards" aria-hidden="true"><span>7</span><span>3</span><span>5</span><span>2</span><span>6</span></div>
-    </div>
-  </header>
-  <section class="instructions" aria-label="How to investigate">
-    <p><b aria-hidden="true">1</b>Watch and predict.</p>
-    <p><b aria-hidden="true">2</b>Try it with your cards.</p>
-    <p><b aria-hidden="true">3</b>Explain the rule in your own words.</p>
+  <header class="site-head"><div class="brand"><span class="brand-mark" aria-hidden="true">{ }</span>CP12 / CS12</div><span class="site-label">Computer programming &amp; computer science</span></header>
+  <section class="hero" aria-labelledby="page-heading">
+    <div class="eyebrow">Course home</div>
+    <h1 id="page-heading">Choose a topic.</h1>
+    <p class="intro">Find the topic assigned by your teacher, then choose an activity. Each topic keeps its investigations and learning resources together.</p>
+    <div class="path" aria-label="How the course website is organized"><span>Course home</span><i aria-hidden="true">→</i><span>Your topic</span><i aria-hidden="true">→</i><span>Your activity</span></div>
   </section>
-  <section aria-labelledby="choose-heading">
-    <div class="section-head"><h2 id="choose-heading">Choose an investigation</h2><p>Start with your teacher’s instructions.</p></div>
-    <div class="activities">
-      <a class="activity" href="sorting01.html" aria-label="Open Sorting 01">
-        <div class="card-top"><span class="sequence" aria-hidden="true">01</span><span class="badge">Ready to explore</span></div>
-        <h3>Sorting 01</h3>
-        <p>Follow the numbers one step at a time. Predict a change, then check it.</p>
-        <div class="open"><span>Open investigation</span><span aria-hidden="true">→</span></div>
+  <section aria-labelledby="topics-heading">
+    <div class="section-head"><h2 id="topics-heading">Course topics</h2><p>Open a topic to see its activities.</p></div>
+    <div class="topics">
+      <a class="topic" href="sorting.html" aria-label="Open Sorting topic">
+        <div class="card-head"><span class="icon" aria-hidden="true"><i></i><i></i><i></i></span><span class="badge">Ready to explore</span></div>
+        <h3>Sorting</h3>
+        <p>Investigate different ways to arrange numbers. Predict the next move and test the rule with your cards.</p>
+        <div class="meta">4 numbered investigations · All available</div>
+        <div class="open"><span>Open topic</span><span aria-hidden="true">→</span></div>
       </a>
-      <a class="activity" href="sorting02.html" aria-label="Open Sorting 02">
-        <div class="card-top"><span class="sequence" aria-hidden="true">02</span><span class="badge">Ready to explore</span></div>
-        <h3>Sorting 02</h3>
-        <p>Watch what is marked, what is checked, and when the cards move.</p>
-        <div class="open"><span>Open investigation</span><span aria-hidden="true">→</span></div>
-      </a>
-      <article class="activity upcoming" aria-label="Sorting 03 — coming soon">
-        <div class="card-top"><span class="sequence" aria-hidden="true">03</span><span class="badge">Coming soon</span></div>
-        <h3>Sorting 03</h3>
-        <p>Another way to move the cards. Another rule to work out.</p>
+      <article class="topic upcoming" aria-label="Searching — resources coming soon">
+        <div class="card-head"><span class="icon icon-text" aria-hidden="true">?</span><span class="badge">Resources coming soon</span></div>
+        <h3>Searching</h3>
+        <p>A place for future activities and resources about finding information.</p>
+        <div class="open">Not available yet</div>
+      </article>
+      <article class="topic upcoming" aria-label="Files & data — resources coming soon">
+        <div class="card-head"><span class="icon icon-text" aria-hidden="true">[ ]</span><span class="badge">Resources coming soon</span></div>
+        <h3>Files &amp; data</h3>
+        <p>A place for future activities and resources about reading, saving and processing data.</p>
         <div class="open">Not available yet</div>
       </article>
     </div>
   </section>
-  <aside class="note">
-    <span class="note-mark" aria-hidden="true">?</span>
-    <div><strong>Look for the method, not just the final order.</strong><p>Keep a record of the comparisons and movements. Could someone else follow your instructions with a fresh set of cards?</p></div>
-  </aside>
-  <footer>Take your time. Test your ideas. Keep your first attempt and your revised rule.</footer>
+  <aside class="note"><span class="note-mark" aria-hidden="true">i</span><div><strong>Start with your assigned activity.</strong><p>More topics and resources will appear here as they become available. Keep your observations, first attempt and revised explanation.</p></div></aside>
+  <footer>CP12 / CS12 · Explore a topic, try an idea, and explain your thinking.</footer>
 </main>
 </body>
 </html>

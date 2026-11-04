@@ -1,0 +1,302 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="A step-by-step number investigation. Predict, move your cards, and check the next step.">
+  <title>Sorting 04</title>
+  <style>
+    :root { color-scheme: light; --ink:#173329; --muted:#607269; --paper:#f5f7f2; --line:#dce4da; --green:#24694c; --compare:#f4bf56; --settled:#cae7d1; }
+    * { box-sizing:border-box; }
+    body { margin:0; background:var(--paper); color:var(--ink); font:16px/1.5 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; }
+    main { width:min(1080px,100% - 36px); margin:40px auto; }
+    .back-nav { display:flex; justify-content:space-between; gap:18px; flex-wrap:wrap; margin-bottom:24px; font-size:.9rem; }
+    .back-nav a { color:var(--green); text-decoration:none; font-weight:650; }
+    .back-nav a:hover { text-decoration:underline; }
+    .back-nav a:focus-visible { outline:3px solid #387dc2; outline-offset:5px; border-radius:3px; }
+    .eyebrow { color:var(--green); font-size:.76rem; font-weight:750; letter-spacing:.15em; text-transform:uppercase; }
+    h1 { margin:6px 0 8px; font-size:clamp(2rem,5vw,3.3rem); letter-spacing:-.045em; line-height:1.1; }
+    .intro { margin:0; color:var(--muted); max-width:680px; }
+    .prompt { display:flex; align-items:center; gap:16px; margin:25px 0 18px; padding:16px 20px; border:1px solid #d8e4d4; border-radius:12px; background:#eaf0e3; }
+    .prompt strong { display:block; }
+    .prompt p { margin:0; font-size:.94rem; }
+    .number { display:grid; place-items:center; width:36px; height:36px; flex-shrink:0; border-radius:50%; color:white; background:var(--green); font-weight:750; }
+    .panel { background:white; border:1px solid var(--line); border-radius:18px; padding:24px; box-shadow:0 5px 22px #1c352608; }
+    .panel-head { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px; }
+    h2 { margin:0; font-size:1.05rem; }
+    .legend { display:flex; flex-wrap:wrap; gap:14px; color:var(--muted); font-size:.8rem; }
+    .legend span { display:flex; align-items:center; gap:6px; }
+    .dot { display:inline-block; width:11px; height:11px; border-radius:3px; border:1px solid #c1cec3; background:#eaf0e8; }
+    .dot.active { background:var(--compare); border-color:#c58e26; }
+    .dot.settled { background:var(--settled); border-color:#7fad86; }
+    .chart { position:relative; height:310px; margin:26px 0 0; border-bottom:1px solid var(--line); }
+    .tile { position:absolute; bottom:0; display:flex; flex-direction:column; justify-content:flex-end; align-items:center; padding:12px 2px; border:1px solid #bcccbc; border-bottom:0; border-radius:9px 9px 0 0; background:#eaf0e8; transition:left .32s ease,height .32s ease,background-color .2s; }
+    .tile.active { background:var(--compare); border-color:#c58e26; box-shadow:0 0 0 2px #f4bf5633; }
+    .tile.settled { background:var(--settled); border-color:#7fad86; }
+    .tile.marked { outline:3px solid #5084ba; outline-offset:-3px; }
+    .dot.marked { border:2px solid #5084ba; background:white; }
+    .section-strip { display:flex; align-items:center; flex-wrap:wrap; gap:12px; margin-top:20px; padding:12px 14px; background:#f6f8f4; border-radius:9px; font-size:.86rem; }
+    #range-note { color:var(--muted); }
+    .tile.outside { opacity:.4; }
+    .tile strong { font-size:clamp(.95rem,2.8vw,1.8rem); font-variant-numeric:tabular-nums; }
+    .positions { display:grid; color:var(--muted); font-size:.78rem; text-align:center; margin-top:9px; }
+    .position-label { color:var(--muted); font-size:.75rem; margin:5px 0 20px; text-align:center; }
+    .status { min-height:56px; padding:14px 16px; background:#f6f8f4; border-radius:10px; font-weight:600; }
+    .controls { display:flex; align-items:center; flex-wrap:wrap; gap:9px; margin-top:18px; }
+    button,input { font:inherit; }
+    button { border:1px solid #c7d3c7; border-radius:8px; background:white; color:var(--ink); padding:10px 15px; cursor:pointer; font-weight:600; }
+    button:hover:not(:disabled) { background:#f0f5ed; }
+    button.primary { background:var(--green); border-color:var(--green); color:white; }
+    button.primary:hover:not(:disabled) { background:#1b523b; }
+    button:disabled { opacity:.42; cursor:default; }
+    button:focus-visible,input:focus-visible,summary:focus-visible { outline:3px solid #387dc2; outline-offset:3px; }
+    .speed { display:flex; align-items:center; gap:9px; color:var(--muted); font-size:.85rem; margin-left:auto; }
+    .speed input { width:100px; accent-color:var(--green); }
+    .bottom { display:grid; grid-template-columns:1.2fr 1fr; gap:16px; margin-top:18px; }
+    .small-panel { background:white; border:1px solid var(--line); border-radius:14px; padding:20px; }
+    .small-panel h2 { margin-bottom:8px; }
+    label[for="numbers"] { display:block; font-size:.85rem; color:var(--muted); margin-bottom:7px; }
+    .input-row { display:flex; gap:8px; }
+    #numbers { width:100%; min-width:0; padding:10px; border:1px solid #c7d3c7; border-radius:8px; color:var(--ink); background:white; }
+    .help { margin:8px 0 0; color:var(--muted); font-size:.79rem; }
+    .error { min-height:20px; margin:6px 0 0; color:#a12828; font-size:.83rem; }
+    .stats { display:flex; flex-wrap:wrap; gap:10px; margin:12px 0; }
+    .stat { flex:1; min-width:70px; background:#f5f7f2; border-radius:9px; padding:8px 12px; }
+    .stat span { display:block; color:var(--muted); font-size:.76rem; }
+    .stat strong { font-size:1.25rem; font-variant-numeric:tabular-nums; }
+    .original { color:var(--muted); font-size:.83rem; overflow-wrap:anywhere; }
+    footer { margin:22px 0; color:var(--muted); font-size:.82rem; text-align:center; }
+    @media(max-width:650px) { main { width:calc(100% - 24px); margin:24px auto; } .panel { padding:16px; } .chart { height:250px; } .bottom { grid-template-columns:1fr; } .speed { margin:8px 0 0; width:100%; } .controls button { padding:10px 12px; } .prompt { align-items:flex-start; padding:14px; } }
+    @media(prefers-reduced-motion:reduce) { .tile { transition:none; } }
+  </style>
+</head>
+<body>
+<main>
+  <nav class="back-nav" aria-label="Activity navigation"><a href="sorting.html">← All sorting activities</a><a href="index.html">Course home</a></nav>
+  <header>
+    <div class="eyebrow">CP12 / CS12 · Number investigation</div>
+    <h1>Sorting 04</h1>
+    <p class="intro">Watch the changes, find a rule, and test it with your number cards.</p>
+  </header>
+  <section class="prompt" aria-label="Before advancing">
+    <span class="number" aria-hidden="true">?</span>
+    <div><strong>Predict before you click.</strong><p>Which numbers will be checked? Will anything move? Try it with your cards, then check the next step.</p></div>
+  </section>
+  <section class="panel" aria-labelledby="chart-title">
+    <div class="panel-head">
+      <h2 id="chart-title">Follow the numbers</h2>
+      <div class="legend"><span><i class="dot" aria-hidden="true"></i>Not settled</span><span><i class="dot marked" aria-hidden="true"></i>Reference card</span><span><i class="dot active" aria-hidden="true"></i>Being compared</span><span><i class="dot settled" aria-hidden="true"></i>Settled</span></div>
+    </div>
+    <div class="section-strip"><strong>Current section</strong><span id="range-note">The whole row is ready.</span></div>
+    <div id="chart" class="chart" role="img" aria-label="Number cards"></div>
+    <div id="positions" class="positions" aria-hidden="true"></div>
+    <p class="position-label">Position (index)</p>
+    <div id="status" class="status" role="status" aria-live="polite" aria-atomic="true">Ready. Predict which card will be used as a reference.</div>
+    <div class="controls" aria-label="Playback controls">
+      <button id="previous" type="button">← Previous</button>
+      <button id="next" type="button" class="primary">Next step →</button>
+      <button id="run" type="button">Run</button>
+      <button id="reset" type="button">Reset</button>
+      <button id="shuffle" type="button">Shuffle</button>
+      <label class="speed" for="speed">Run speed <input id="speed" type="range" min="1" max="5" value="3" aria-valuetext="Medium"><span id="speed-label">Medium</span></label>
+    </div>
+  </section>
+  <div class="bottom">
+    <section class="small-panel" aria-labelledby="your-numbers">
+      <h2 id="your-numbers">Use your card numbers</h2>
+      <form id="number-form" novalidate>
+        <label for="numbers">Enter 2–12 whole numbers, separated by commas or spaces.</label>
+        <div class="input-row"><input id="numbers" name="numbers" type="text" value="7, 3, 5, 2, 6" autocomplete="off" spellcheck="false" aria-describedby="number-help number-error"><button id="apply" type="submit">Use numbers</button></div>
+        <p id="number-help" class="help">Values from −99 to 999. Repeated numbers are welcome.</p>
+        <p id="number-error" class="error" role="alert"></p>
+      </form>
+    </section>
+    <section class="small-panel" aria-labelledby="observations">
+      <h2 id="observations">Keep track</h2>
+      <div class="stats"><div class="stat"><span>Round</span><strong id="pass">—</strong></div><div class="stat"><span>Comparisons</span><strong id="comparisons">0</strong></div><div class="stat"><span>Exchanges</span><strong id="exchanges">0</strong></div></div>
+      <div class="original">Starting order: <span id="original"></span></div>
+      <p class="help">Reset returns to this starting order. Shuffle creates a different order using the same cards.</p>
+    </section>
+  </div>
+  <footer>What rule explains the changes? Write your own instructions and test them on another set of cards.</footer>
+</main>
+<script>
+'use strict';
+// An original, self-contained classroom investigation; no external libraries.
+function createSteps(values) {
+  const cards = values.map((value,id) => ({value,id}));
+  const steps = [], settled = new Set(), pending = [];
+  let comparisons = 0, exchanges = 0, round = 0;
+  const record = (phase,active,range,reference,message) => {
+    steps.push({cards:cards.map(card => ({...card})), phase, active:[...active], range:range ? [...range] : null, reference, settled:[...settled], pass:round, comparisons, exchanges, message});
+  };
+  record('ready',[],null,-1,'Ready. Predict which card will be used as a reference.');
+  if (cards.length) pending.push([0,cards.length - 1]);
+  while (pending.length) {
+    const [low,high] = pending.pop();
+    if (low === high) {
+      settled.add(low);
+      record('single',[],[low,high],-1,`This section contains just one card, at position ${low}. It is settled.`);
+      continue;
+    }
+    round++;
+    const reference = cards[high];
+    const range = [low,high];
+    record('section',[],range,reference.id,`Round ${round}: work within positions ${low}–${high}. The outlined card is the reference.`);
+    let destination = low;
+    for (let scan = low; scan < high; scan++) {
+      const current = cards[scan];
+      comparisons++;
+      record('compare',[current.id,reference.id],range,reference.id,`Comparing ${current.value} with reference ${reference.value}. Predict what will happen next.`);
+      if (current.value < reference.value) {
+        if (destination !== scan) {
+          const other = cards[destination];
+          [cards[destination],cards[scan]] = [cards[scan],cards[destination]];
+          exchanges++;
+          record('exchange',[current.id,other.id],range,reference.id,`${current.value} and ${other.value} exchanged places at positions ${destination} and ${scan}.`);
+        } else {
+          record('keep',[current.id],range,reference.id,`${current.value} stays in place. Predict which card is checked next.`);
+        }
+        destination++;
+      } else {
+        record('keep',[current.id],range,reference.id,`${current.value} stays in place. Predict which card is checked next.`);
+      }
+    }
+    record('placement',destination === high ? [reference.id] : [cards[destination].id,reference.id],range,reference.id,'The section has been checked. Predict the reference card’s next position.');
+    if (destination !== high) {
+      const other = cards[destination];
+      [cards[destination],cards[high]] = [cards[high],cards[destination]];
+      exchanges++;
+      record('exchange-reference',[reference.id,other.id],range,reference.id,`${reference.value} and ${other.value} exchanged places. What can now be left alone?`);
+    } else {
+      record('keep-reference',[reference.id],range,reference.id,`The reference is already at position ${destination}. No exchange is needed.`);
+    }
+    settled.add(destination);
+    record('settle',[],range,reference.id,`Position ${destination} is settled. The sections on either side can be investigated separately.`);
+    // Stack order makes the left section the next one investigated.
+    if (destination + 1 <= high) pending.push([destination + 1,high]);
+    if (low <= destination - 1) pending.push([low,destination - 1]);
+  }
+  record('done',[],null,-1,'Finished. Explain the rule, then test it with another order of cards.');
+  return steps;
+}
+
+const ui = Object.fromEntries(['range-note','chart','positions','status','previous','next','run','reset','shuffle','speed','speed-label','numbers','number-error','original','pass','comparisons','exchanges','number-form'].map(id => [id,document.getElementById(id)]));
+let starting = [7,3,5,2,6], steps = [], position = 0, timer = null;
+const elements = new Map();
+const delays = [1800,1250,850,550,350];
+const speedNames = ['Very slow','Slow','Medium','Fast','Very fast'];
+
+function stop() {
+  if (timer !== null) clearInterval(timer);
+  timer = null;
+  ui.run.textContent = 'Run';
+}
+
+function draw() {
+  const step = steps[position];
+  const low = Math.min(...starting), high = Math.max(...starting);
+  const maxHeight = window.matchMedia('(max-width:650px)').matches ? 220 : 280;
+  const width = 100 / step.cards.length;
+  for (const [index,card] of step.cards.entries()) {
+    const tile = elements.get(card.id);
+    tile.style.left = `calc(${index * width}% + 4px)`;
+    tile.style.width = `calc(${width}% - 8px)`;
+    tile.style.height = `${high === low ? maxHeight * .65 : 58 + (card.value - low) / (high - low) * (maxHeight - 58)}px`;
+    const active = step.active.includes(card.id);
+    const done = step.settled.includes(index);
+    const outside = step.range && (index < step.range[0] || index > step.range[1]) && !done;
+    tile.className = 'tile' + (active ? ' active' : done ? ' settled' : '') + (card.id === step.reference ? ' marked' : '') + (outside ? ' outside' : '');
+    tile.setAttribute('aria-hidden','true');
+  }
+  const referenceIndex = step.cards.findIndex(card => card.id === step.reference);
+  const referenceDescription = referenceIndex >= 0 ? ` Reference card: ${step.cards[referenceIndex].value} at position ${referenceIndex}.` : '';
+  ui['range-note'].textContent = step.range ? `Positions ${step.range[0]}–${step.range[1]}` : step.phase === 'done' ? 'All positions are settled.' : 'The whole row is ready.';
+  ui.chart.setAttribute('aria-label',`Current order: ${step.cards.map(card => card.value).join(', ')}.${referenceDescription} ${step.message}`);
+  ui.status.textContent = step.message;
+  ui.pass.textContent = step.pass || '—';
+  ui.comparisons.textContent = step.comparisons;
+  ui.exchanges.textContent = step.exchanges;
+  ui.previous.disabled = position === 0;
+  ui.next.disabled = position === steps.length - 1;
+  ui.run.disabled = position === steps.length - 1;
+}
+
+function load(values) {
+  stop();
+  starting = [...values];
+  steps = createSteps(starting);
+  position = 0;
+  elements.clear();
+  ui.chart.replaceChildren();
+  ui.positions.replaceChildren();
+  ui.positions.style.gridTemplateColumns = `repeat(${values.length},1fr)`;
+  values.forEach((value,id) => {
+    const tile = document.createElement('div');
+    const label = document.createElement('strong');
+    label.textContent = value;
+    tile.append(label);
+    ui.chart.append(tile);
+    elements.set(id,tile);
+    const index = document.createElement('span');
+    index.textContent = id;
+    ui.positions.append(index);
+  });
+  ui.numbers.value = starting.join(', ');
+  ui.original.textContent = starting.join(', ');
+  ui['number-error'].textContent = '';
+  ui.numbers.removeAttribute('aria-invalid');
+  draw();
+}
+
+function nextStep() {
+  if (position < steps.length - 1) position++;
+  if (position === steps.length - 1) stop();
+  draw();
+}
+
+function start() {
+  if (position === steps.length - 1) return;
+  ui.run.textContent = 'Pause';
+  timer = setInterval(nextStep,delays[Number(ui.speed.value) - 1]);
+}
+
+ui.next.addEventListener('click',() => { stop(); nextStep(); });
+ui.previous.addEventListener('click',() => { stop(); if (position > 0) position--; draw(); });
+ui.run.addEventListener('click',() => { if (timer !== null) stop(); else start(); });
+ui.reset.addEventListener('click',() => load(starting));
+ui.shuffle.addEventListener('click',() => {
+  const shuffled = [...starting];
+  for (let index = shuffled.length - 1; index > 0; index--) {
+    const other = Math.floor(Math.random() * (index + 1));
+    [shuffled[index],shuffled[other]] = [shuffled[other],shuffled[index]];
+  }
+  if (shuffled.every((value,index) => value === starting[index])) {
+    const other = shuffled.findIndex(value => value !== shuffled[0]);
+    if (other > 0) [shuffled[0],shuffled[other]] = [shuffled[other],shuffled[0]];
+  }
+  load(shuffled);
+});
+ui.speed.addEventListener('input',() => {
+  const label = speedNames[Number(ui.speed.value) - 1];
+  ui['speed-label'].textContent = label;
+  ui.speed.setAttribute('aria-valuetext',label);
+  if (timer !== null) { stop(); start(); }
+});
+ui['number-form'].addEventListener('submit',event => {
+  event.preventDefault();
+  stop();
+  const tokens = ui.numbers.value.trim().split(/[\s,]+/).filter(Boolean);
+  if (tokens.length < 2 || tokens.length > 12 || tokens.some(token => !/^-?\d+$/.test(token) || Number(token) < -99 || Number(token) > 999)) {
+    ui['number-error'].textContent = 'Please enter 2–12 whole numbers from −99 to 999, separated by commas or spaces.';
+    ui.numbers.setAttribute('aria-invalid','true');
+    return;
+  }
+  load(tokens.map(Number));
+});
+document.addEventListener('visibilitychange',() => { if (document.hidden) stop(); });
+window.addEventListener('resize',draw);
+load(starting);
+</script>
+</body>
+</html>
