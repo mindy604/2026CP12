@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Choose a numbered search investigation. Enter a target, predict each check, and test the rule with your own number cards.">
+  <title>Search | CP12 / CS12</title>
+  <style>
+    :root { color-scheme:light; --ink:#173329; --muted:#607269; --paper:#f5f7f2; --line:#dce4da; --green:#24694c; }
+    * { box-sizing:border-box; }
+    body { margin:0; background:var(--paper); color:var(--ink); font:16px/1.55 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; }
+    main { max-width:1080px; margin:0 auto; padding:48px 24px 28px; }
+    .topic-nav { display:flex; justify-content:space-between; gap:18px; flex-wrap:wrap; margin-bottom:28px; font-size:.88rem; }
+    .topic-nav a { color:var(--green); text-decoration:none; font-weight:650; }
+    .topic-nav a:hover { text-decoration:underline; }
+    .topic-nav a:focus-visible { outline:3px solid #387dc2; outline-offset:5px; border-radius:3px; }
+    .eyebrow { color:var(--green); font-size:.76rem; font-weight:750; letter-spacing:.15em; text-transform:uppercase; }
+    .hero { display:flex; align-items:center; justify-content:space-between; gap:32px; padding:18px 0 32px; }
+    h1 { margin:10px 0 14px; font-size:clamp(3.3rem,8vw,5.4rem); letter-spacing:-.065em; line-height:1.03; font-weight:750; }
+    .intro { color:var(--muted); max-width:470px; margin:0; font-size:1.05rem; }
+    .hero-cards { display:flex; gap:9px; flex-shrink:0; padding:32px 12px; }
+    .hero-cards span { display:grid; place-items:center; width:52px; height:76px; border:1px solid #bacbb9; border-radius:10px; background:#e9efe3; font-size:1.7rem; font-weight:650; box-shadow:0 7px 0 #e1e8dc; }
+    .hero-cards span:nth-child(2) { transform:translateY(-12px) rotate(-6deg); background:#f8e5b4; }
+    .hero-cards span:nth-child(4) { transform:translateY(8px) rotate(5deg); background:#d8e9d7; }
+    .instructions { display:flex; gap:24px; flex-wrap:wrap; padding:18px 0; border-top:1px solid var(--line); border-bottom:1px solid var(--line); margin-bottom:36px; }
+    .instructions p { display:flex; align-items:center; gap:9px; margin:0; color:var(--muted); font-size:.88rem; }
+    .instructions b { display:grid; place-items:center; flex-shrink:0; width:24px; height:24px; border-radius:50%; background:#e6eddf; color:var(--green); font-size:.76rem; }
+    .section-head { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:16px; }
+    h2 { margin:0; font-size:1.2rem; letter-spacing:-.02em; }
+    .section-head p { margin:0; color:var(--muted); font-size:.85rem; }
+    .activities { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:18px; }
+    .activity { display:flex; flex-direction:column; min-height:285px; padding:24px; border:1px solid var(--line); border-radius:16px; background:white; }
+    a.activity { color:inherit; text-decoration:none; box-shadow:0 4px 16px #1c352607; transition:transform .16s,border-color .16s,box-shadow .16s; }
+    a.activity:hover { transform:translateY(-4px); border-color:#80a88a; box-shadow:0 10px 24px #1c35260c; }
+    a.activity:focus-visible { outline:3px solid #387dc2; outline-offset:5px; }
+    .card-top { display:flex; align-items:center; justify-content:space-between; margin-bottom:27px; }
+    .sequence { display:grid; place-items:center; width:48px; height:48px; border:1px solid #ceddc9; border-radius:11px; background:#eef3e8; color:var(--green); font-size:1.2rem; font-weight:700; }
+    .badge { color:var(--green); background:#edf4e9; padding:4px 9px; border-radius:20px; font-size:.72rem; font-weight:650; }
+    h3 { margin:0 0 8px; font-size:1.42rem; letter-spacing:-.035em; }
+    .activity p { margin:0 0 24px; color:var(--muted); font-size:.91rem; }
+    .open { display:flex; align-items:center; justify-content:space-between; margin-top:auto; color:var(--green); font-size:.9rem; font-weight:700; }
+    .open span:last-child { font-size:1.25rem; line-height:1; }
+    .upcoming { background:#f0f3ed; border-style:dashed; }
+    .upcoming .sequence { background:#e8ede3; border-color:#d6dfd1; color:#7e8e7e; }
+    .upcoming h3 { color:#768574; }
+    .upcoming .badge { color:#6d7c6c; background:#e7ece2; }
+    .upcoming p,.upcoming .open { color:#7a8777; }
+    .note { display:flex; gap:12px; margin-top:28px; padding:18px 20px; border:1px solid #d8e4d4; border-radius:12px; background:#eaf0e3; }
+    .note strong { font-size:.93rem; }
+    .note p { margin:3px 0 0; color:var(--muted); font-size:.87rem; }
+    .note-mark { display:grid; place-items:center; flex-shrink:0; width:28px; height:28px; border-radius:50%; background:var(--green); color:white; font-weight:700; }
+    footer { border-top:1px solid var(--line); margin-top:38px; padding-top:18px; color:var(--muted); font-size:.8rem; }
+    @media(max-width:800px) { .hero-cards span { width:39px; height:61px; font-size:1.35rem; } .hero-cards { gap:6px; padding-right:0; } .activities { grid-template-columns:repeat(2,minmax(0,1fr)); } }
+    @media(max-width:580px) { main { padding:28px 18px 24px; } .hero { display:block; padding-top:14px; } .hero-cards { padding:30px 0 10px; } .hero-cards span { width:44px; height:63px; } .activities { grid-template-columns:1fr; } .activity { min-height:250px; } .instructions { gap:12px; margin-bottom:28px; } .instructions p { width:100%; } .section-head { align-items:flex-start; flex-direction:column; gap:4px; } }
+    @media(prefers-reduced-motion:reduce) { a.activity { transition:none; } a.activity:hover { transform:none; } }
+  </style>
+</head>
+<body>
+<main>
+  <nav class="topic-nav" aria-label="Topic navigation"><a href="index.html">← Course home</a><span>CP12 / CS12 · Search</span></nav>
+  <header>
+    <div class="eyebrow">CP12 / CS12 · Number investigations</div>
+    <div class="hero">
+      <div>
+        <h1>Search</h1>
+        <p class="intro">One target. Different ways to find it.<br>Choose the investigation assigned by your teacher.</p>
+      </div>
+      <div class="hero-cards" aria-hidden="true"><span>7</span><span>3</span><span>?</span><span>2</span><span>6</span></div>
+    </div>
+  </header>
+  <section class="instructions" aria-label="How to investigate">
+    <p><b aria-hidden="true">1</b>Enter cards and a target.</p>
+    <p><b aria-hidden="true">2</b>Predict the next check.</p>
+    <p><b aria-hidden="true">3</b>Explain the rule in your own words.</p>
+  </section>
+  <section aria-labelledby="choose-heading">
+    <div class="section-head"><h2 id="choose-heading">Choose an investigation</h2><p>Start with your teacher’s instructions.</p></div>
+    <div class="activities">
+      <a class="activity" href="search01.html" aria-label="Open Search 01">
+        <div class="card-top"><span class="sequence" aria-hidden="true">01</span><span class="badge">Ready to explore</span></div>
+        <h3>Search 01</h3>
+        <p>Enter a target and follow each check. Which position will be checked next?</p>
+        <div class="open"><span>Open investigation</span><span aria-hidden="true">→</span></div>
+      </a>
+      <a class="activity" href="search02.html" aria-label="Open Search 02">
+        <div class="card-top"><span class="sequence" aria-hidden="true">02</span><span class="badge">Ready to explore</span></div>
+        <h3>Search 02</h3>
+        <p>Try the same target more than once. Does the checking order change?</p>
+        <div class="open"><span>Open investigation</span><span aria-hidden="true">→</span></div>
+      </a>
+      <a class="activity" href="search03.html" aria-label="Open Search 03">
+        <div class="card-top"><span class="sequence" aria-hidden="true">03</span><span class="badge">Ready to explore</span></div>
+        <h3>Search 03</h3>
+        <p>Start with ordered cards. Watch which positions can be ruled out together.</p>
+        <div class="open"><span>Open investigation</span><span aria-hidden="true">→</span></div>
+      </a>
+    </div>
+  </section>
+  <aside class="note">
+    <span class="note-mark" aria-hidden="true">?</span>
+    <div><strong>When is there enough information to stop?</strong><p>Compare the number of checks for present and absent targets. Could someone else follow your rule with a fresh set of cards?</p></div>
+  </aside>
+  <footer>Take your time. Test your ideas. Keep your first attempt and your revised rule.</footer>
+</main>
+</body>
+</html>
