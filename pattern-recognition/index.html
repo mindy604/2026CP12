@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="An interactive Python notebook for recognizing and reusing a counting pattern. Predict, trace, run code, and reflect.">
+  <meta name="theme-color" content="#f5f3ed">
+  <title>Pattern Lab · Your interactive Python notebook</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#notebook">Skip to notebook</a>
+  <aside class="sidebar">
+    <a class="brand" href="#top" aria-label="Pattern Lab home"><span class="brand-mark" aria-hidden="true">[⋯]</span> Pattern Lab</a>
+    <div class="course-label">CP12 / CS12<br>Computational thinking</div>
+    <nav aria-label="Notebook sections">
+      <a href="#spot" data-nav="spot"><span>01</span> Spot the pattern <i aria-hidden="true"></i></a>
+      <a href="#trace" data-nav="trace"><span>02</span> Trace it <i aria-hidden="true"></i></a>
+      <a href="#experiment" data-nav="experiment"><span>03</span> Run & change <i aria-hidden="true"></i></a>
+      <a href="#transfer" data-nav="transfer"><span>04</span> Try a new problem <i aria-hidden="true"></i></a>
+      <a href="#reflect" data-nav="reflect"><span>05</span> Make it yours <i aria-hidden="true"></i></a>
+    </nav>
+    <div class="sidebar-bottom"><span class="small-label">YOUR NOTEBOOK</span><p id="progress-label">0 of 5 sections completed</p><progress id="progress" max="5" value="0" aria-label="Notebook sections completed"></progress><p class="save-note" id="save-note" role="status">Work saves on this browser.</p><button class="button secondary full" data-download>Download my work <span aria-hidden="true">↓</span></button></div>
+  </aside>
+  <main id="notebook">
+    <header class="topbar" id="top"><a class="course-back" href="../computational-thinking.html">← Computational thinking</a><span class="lesson-tag">Pattern recognition</span></header>
+    <div class="page-content">
+      <div class="hero">
+        <div class="eyebrow"><span class="tiny-line"></span> DIFFERENT PROBLEMS. FAMILIAR STEPS.</div>
+        <h1>Find the pattern.<br><em>Use it again.</em></h1>
+        <p class="hero-description">You do not always need a brand-new solution. Notice what repeats, keep the useful steps, and change the part that is different.</p>
+        <div class="hero-footer"><span class="time">About 20–30 minutes</span><span>Predict → try → change → explain</span><span class="mobile-progress" id="mobile-progress">0 of 5 sections completed</span></div>
+      </div>
+      <section class="notebook-section" id="spot" aria-labelledby="spot-title">
+        <div class="section-heading"><span class="section-number">01</span><div><div class="eyebrow">NOTICE</div><h2 id="spot-title">Two problems. One plan.</h2></div></div>
+        <p><strong>Pattern recognition</strong> means noticing that different problems share similar steps. Counting vowels and counting even numbers look different, but their plans are almost the same.</p>
+        <div class="comparison">
+          <div class="example-sheet"><div class="sheet-heading"><span class="example-icon">Aa</span><h3>Count the vowels</h3></div><div class="sample-data">e d u c a t i o n</div><ol><li>Start a count at 0.</li><li>Look at each letter.</li><li>Is the letter <mark>a vowel?</mark></li><li>If yes, add 1.</li></ol></div>
+          <div class="example-sheet"><div class="sheet-heading"><span class="example-icon">24</span><h3>Count even numbers</h3></div><div class="sample-data">12 &nbsp;7 &nbsp;8 &nbsp;3 &nbsp;10</div><ol><li>Start a count at 0.</li><li>Look at each number.</li><li>Is the number <mark>even?</mark></li><li>If yes, add 1.</li></ol></div>
+        </div>
+        <div class="pattern-strip"><span>Start at 0</span><b>→</b><span>Look at each item</span><b>→</b><span>Check a rule</span><b>→</b><span>Add 1 if true</span></div>
+        <fieldset class="question"><legend>What can we reuse in both problems?</legend><label class="choice"><input type="radio" name="pattern" value="same-data"><span>The exact same letters and numbers.</span></label><label class="choice"><input type="radio" name="pattern" value="same-plan"><span>The loop, the check, and the counter.</span></label><label class="choice"><input type="radio" name="pattern" value="sort"><span>A step that sorts all the items.</span></label><button class="button secondary" id="check-pattern">Check my choice</button><p class="feedback" id="pattern-feedback" role="status"></p></fieldset>
+      </section>
+      <section class="notebook-section" id="trace" aria-labelledby="trace-title">
+        <div class="section-heading"><span class="section-number">02</span><div><div class="eyebrow">PREDICT</div><h2 id="trace-title">Be the computer.</h2></div></div>
+        <p>For each item, predict whether the count goes up. Trace <strong>two different examples</strong>. Which step changes when you switch examples?</p>
+        <div class="trace-lab">
+          <div class="lab-toolbar"><label for="trace-example">Example <select id="trace-example"><option value="vowels">Count vowels</option><option value="even">Count even numbers</option><option value="passes">Count marks of 50 or more</option></select></label><span id="trace-completed" class="subtle">0 of 3 examples traced</span></div>
+          <div class="trace-source" id="trace-source" role="list" aria-label="Items to check"></div>
+          <div class="trace-stage"><div><span class="small-label" id="trace-position">ITEM 1</span><h3 id="trace-question">Is “e” a vowel?</h3></div><div class="count-display"><span class="small-label">COUNT</span><strong id="trace-count">0</strong></div></div>
+          <div class="trace-actions"><button class="button secondary" id="trace-add" aria-pressed="false">Add 1</button><button class="button secondary" id="trace-keep" aria-pressed="false">Keep the count</button><button class="button primary" id="trace-next" disabled>Next item →</button><button class="text-button" id="trace-replay">Start this example again</button></div>
+          <p class="feedback" id="trace-feedback" role="status">Choose your prediction.</p>
+          <div class="rule-footer"><span>THE RULE</span><code id="trace-rule">item.lower() in "aeiou"</code></div>
+        </div>
+        <a class="quiet-link" href="counting-activity.html" target="_blank" rel="noopener">Open the original focused activity ↗</a>
+      </section>
+      <section class="notebook-section" id="experiment" aria-labelledby="experiment-title">
+        <div class="section-heading"><span class="section-number">03</span><div><div class="eyebrow">EXPERIMENT</div><h2 id="experiment-title">Keep the plan. Change the rule.</h2></div></div>
+        <p>This Python program counts even numbers. Predict the output, then run it. Next, change <code>== 0</code> to <code>!= 0</code> to count <strong>odd numbers</strong>. Run it again and compare.</p>
+        <div class="hint-line"><span aria-hidden="true">↳</span> <code>item % 2</code> gives the remainder after dividing by 2. Even numbers have a remainder of 0.</div>
+        <div class="prediction-row"><label for="experiment-prediction">My first predicted count <input type="number" min="0" max="5" id="experiment-prediction" placeholder="0–5" data-save></label><span class="subtle">Make a prediction before your first run.</span></div>
+        <div class="code-cell" data-cell="experiment"><div class="cell-toolbar"><label for="experiment-code"><span class="cell-dot"></span> Python · editable</label><div><button class="text-button" data-restore="experiment">Restore starter</button><button class="button run" data-run="experiment">▶ Run code</button><button class="button stop" data-stop="experiment" hidden>■ Stop</button></div></div><div class="editor-grid"><textarea id="experiment-code" class="code-input" spellcheck="false" autocapitalize="off" autocomplete="off" aria-describedby="experiment-editor-help" data-save></textarea><div class="output-pane"><span class="small-label">OUTPUT</span><pre id="experiment-output">Your output will appear here.</pre><span class="run-status" id="experiment-status" role="status">Not run yet</span></div></div><div class="cell-footer" id="experiment-editor-help">Edit the code, then select Run code. Tab inserts 4 spaces; Escape then Tab moves focus. Each run starts fresh.</div></div>
+        <p class="feedback" id="experiment-check" role="status"></p>
+      </section>
+      <section class="notebook-section" id="transfer" aria-labelledby="transfer-title">
+        <div class="section-heading"><span class="section-number">04</span><div><div class="eyebrow">REUSE</div><h2 id="transfer-title">A new problem. A familiar pattern.</h2></div></div>
+        <p>A mark of <strong>50 or more</strong> is a pass. Before changing the starter code, <strong>predict what it will print</strong>, then run it. It misses the mark of 50. Fix the condition so that 50 is included, then run it again and compare. Keep the loop and counter.</p>
+        <fieldset class="question compact"><legend>Which condition includes a mark of exactly 50?</legend><div class="inline-choices"><label class="choice"><input type="radio" name="condition" value="gt"><code>mark &gt; 50</code></label><label class="choice"><input type="radio" name="condition" value="gte"><code>mark &gt;= 50</code></label><label class="choice"><input type="radio" name="condition" value="eq"><code>mark == 50</code></label></div><button class="button secondary" id="check-condition">Check my choice</button><p class="feedback" id="condition-feedback" role="status"></p></fieldset>
+        <div class="prediction-row"><label for="transfer-prediction">My predicted count for the starter <input type="number" min="0" max="5" id="transfer-prediction" placeholder="0–5" data-save aria-describedby="transfer-prediction-help"></label><span class="subtle" id="transfer-prediction-help">Predict before your first run. This is a new prediction for section 04.</span></div>
+        <div class="code-cell" data-cell="transfer"><div class="cell-toolbar"><label for="transfer-code"><span class="cell-dot"></span> Your turn · editable</label><div><button class="text-button" data-restore="transfer">Restore starter</button><button class="button run" data-run="transfer">▶ Run code</button><button class="button stop" data-stop="transfer" hidden>■ Stop</button></div></div><div class="editor-grid"><textarea id="transfer-code" class="code-input" spellcheck="false" autocapitalize="off" autocomplete="off" data-save></textarea><div class="output-pane"><span class="small-label">OUTPUT</span><pre id="transfer-output">Predict the starter's output, run it, then fix the condition.</pre><span class="run-status" id="transfer-status" role="status">Not run yet</span></div></div><div class="cell-footer">Check the boundary: 50 must count as a pass. Expected final count after your fix: 3.</div></div>
+        <p class="feedback" id="transfer-check" role="status"></p>
+      </section>
+      <section class="notebook-section" id="reflect" aria-labelledby="reflect-title">
+        <div class="section-heading"><span class="section-number">05</span><div><div class="eyebrow">REFLECT</div><h2 id="reflect-title">Explain one small thing.</h2></div></div>
+        <p>Use the choices to help you explain. You only need a short answer about something you actually did.</p>
+        <div class="reflection-fields"><label for="student-name">Name or initials <span class="subtle">optional</span><input id="student-name" type="text" maxlength="100" data-save placeholder="For your downloaded copy"></label><fieldset class="question compact"><legend>What did you reuse?</legend><label class="choice"><input type="checkbox" name="reused" value="loop"><span>The loop that looks at each item.</span></label><label class="choice"><input type="checkbox" name="reused" value="counter"><span>The counter that increases by 1.</span></label><label class="choice"><input type="checkbox" name="reused" value="plan"><span>The plan: look → check → count.</span></label></fieldset><label for="reflection-change">What did you change?<select id="reflection-change" data-save><option value="">Choose the closest answer…</option><option value="condition">I changed the condition to check for a different kind of item.</option><option value="boundary">I changed the comparison to include a boundary value.</option><option value="data">I changed the input data and checked the new count.</option><option value="support">I still need help choosing or changing the condition.</option></select></label><label for="reflection-detail">Add one detail from your work<textarea id="reflection-detail" rows="3" maxlength="2000" data-save placeholder="I changed _____ to _____ so the program would count _____."></textarea></label><p class="hint-line">If you are stuck: “I can follow _____, but I need help with _____.” Name a line, value, or rule from this notebook.</p><button class="button secondary" id="check-reflection">Check my reflection</button><p class="feedback" id="reflection-feedback" role="status"></p></div>
+      </section>
+      <section class="finish"><div><div class="eyebrow">TAKE YOUR LEARNING WITH YOU</div><h2>Your work, ready to hand in.</h2><p>Download your choices, code, outputs, and reflection as a text file. Hand it in using your usual class submission method.</p></div><button class="button primary" data-download>Download my notebook ↓</button></section>
+      <footer class="page-footer"><span>Pattern Lab · CP12 / CS12</span><p id="privacy-note">Your work stays on this browser. It is not sent to your teacher automatically. Download a copy before switching devices.</p><details><summary>About Python and saving</summary><p>Python runs on your device using <a href="https://pyodide.org/en/stable/usage/webworker.html" target="_blank" rel="noopener">Pyodide</a>. Its first load needs an internet connection and may take a moment. Shared computers share this browser's saved notebook. Download your work and clear it when finished.</p><button class="text-button danger" id="clear-work">Clear this browser's notebook</button></details></footer>
+    </div>
+  </main>
+  <div class="toast" id="toast" role="status" hidden></div>
+</body>
+</html>
