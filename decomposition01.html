@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="An interactive decomposition notebook. Predict, group smaller jobs, follow the data and test a concession receipt design.">
+  <title>Decomposition · Example 01 | CP12 / CS12</title>
+  <link rel="stylesheet" href="thinking.css">
+</head>
+<body>
+<main>
+  <nav aria-label="Activity navigation"><a href="decomposition.html">← All decomposition examples</a><a href="index.html">Course home</a></nav>
+  <header class="hero">
+    <div class="path"><a href="computational-thinking.html">Computational thinking</a><span aria-hidden="true">/</span><a href="decomposition.html">Decomposition</a></div>
+    <div class="eyebrow">Interactive notebook · Example 01</div>
+    <h1>One order.<br>Smaller jobs.</h1>
+    <p class="intro">Design a program that takes a concession order and produces an itemized receipt. Find the responsibilities, name the smaller jobs, and follow the information between them.</p>
+    <div class="order"><strong>Your first order</strong><span>2 sandwiches at $4 each</span><span>1 juice at $2</span><span>Expected total: <strong>$10.00</strong></span></div>
+  </header>
+  <section class="cell" aria-labelledby="explore-title">
+    <div class="cell-head"><span class="cell-no" aria-hidden="true">1</span><div><h2 id="explore-title">Investigate a missing job</h2><p>This first design has three jobs. Choose which ones to include and watch what happens.</p></div></div>
+    <label for="prediction">Before testing: what do you think will happen if a job is missing?</label>
+    <textarea id="prediction" rows="2" maxlength="4000" placeholder="I predict…"></textarea>
+    <div class="row" style="margin-top:14px" role="group" aria-label="Included jobs">
+      <label class="check"><input id="guided-read" type="checkbox" checked>Get the order</label>
+      <label class="check"><input id="guided-total" type="checkbox">Calculate the total</label>
+      <label class="check"><input id="guided-receipt" type="checkbox" checked>Make the receipt</label>
+    </div>
+    <button id="guided-test" type="button" class="primary" style="margin-top:10px">Test the missing-job design</button>
+    <ol class="flow" aria-label="Information between the three jobs">
+      <li id="guided-read-stage"><h3>1 · Get the order</h3><p class="muted">Needs: customer choices</p><p id="guided-read-output">Included · not tested</p></li>
+      <li id="guided-total-stage"><h3>2 · Calculate the total</h3><p class="muted">Needs: order and prices</p><p id="guided-total-output">Omitted from this design</p></li>
+      <li id="guided-receipt-stage"><h3>3 · Make the receipt</h3><p class="muted">Needs: order and total</p><p id="guided-receipt-output">Included · not tested</p></li>
+    </ol>
+    <p id="guided-feedback" class="feedback" role="status">Test once, change one choice, then test again. Compare the result with your prediction.</p>
+  </section>
+  <section class="cell" aria-labelledby="build-title">
+    <div class="cell-head"><span class="cell-no" aria-hidden="true">2</span><div><h2 id="build-title">Build your own smaller jobs</h2><p>Here are six responsibilities. Give your jobs names, then decide which responsibilities belong together. Use two or three groups.</p></div></div>
+    <p>Different groupings can work. Aim for one clear purpose in each group. The groups describe <strong>who does what</strong>; they do not set the order in which tasks run.</p>
+    <div class="names">
+      <div><label for="name-a">Job A · your name</label><input id="name-a" maxlength="50" placeholder="Name this smaller job" autocomplete="off"></div>
+      <div><label for="name-b">Job B · your name</label><input id="name-b" maxlength="50" placeholder="Name this smaller job" autocomplete="off"></div>
+      <div><label for="name-c">Job C · your name</label><input id="name-c" maxlength="50" placeholder="Optional third job" autocomplete="off"></div>
+    </div>
+    <div class="tasks">
+      <div class="task"><label for="task-order">Record the chosen items and quantities<small>Customer choices → an order</small></label><select id="task-order" data-task="order"><option value="">Leave out for now</option><option value="a">Job A</option><option value="b">Job B</option><option value="c">Job C</option></select></div>
+      <div class="task"><label for="task-prices">Read the menu prices<small>Menu → prices for each item</small></label><select id="task-prices" data-task="prices"><option value="">Leave out for now</option><option value="a">Job A</option><option value="b">Job B</option><option value="c">Job C</option></select></div>
+      <div class="task"><label for="task-costs">Calculate each item’s cost<small>Order and prices → item costs</small></label><select id="task-costs" data-task="costs"><option value="">Leave out for now</option><option value="a">Job A</option><option value="b">Job B</option><option value="c">Job C</option></select></div>
+      <div class="task"><label for="task-total">Add the item costs<small>Item costs → total</small></label><select id="task-total" data-task="total"><option value="">Leave out for now</option><option value="a">Job A</option><option value="b">Job B</option><option value="c">Job C</option></select></div>
+      <div class="task"><label for="task-format">Prepare the receipt text<small>Order, item costs and total → receipt text</small></label><select id="task-format" data-task="format"><option value="">Leave out for now</option><option value="a">Job A</option><option value="b">Job B</option><option value="c">Job C</option></select></div>
+      <div class="task"><label for="task-display">Display the receipt<small>Receipt text → visible receipt</small></label><select id="task-display" data-task="display"><option value="">Leave out for now</option><option value="a">Job A</option><option value="b">Job B</option><option value="c">Job C</option></select></div>
+    </div>
+    <div id="groups" class="groups" aria-label="Your decomposition groups"></div>
+  </section>
+  <section class="cell" aria-labelledby="test-title">
+    <div class="cell-head"><span class="cell-no" aria-hidden="true">3</span><div><h2 id="test-title">Follow the data and test your design</h2><p>Each responsibility has a built-in action. The test follows their data dependencies and labels each action with your group. You can see missing work even before your design is complete.</p></div></div>
+    <div class="test-select"><div><label for="test-case">Choose a test order</label><select id="test-case"><option value="mixed">Mixed order · 2 sandwiches, 1 juice</option><option value="juice">One item type · 3 juices</option><option value="empty">Empty order · no items</option></select></div><button id="test-design" type="button" class="primary">Test this case</button></div>
+    <p id="case-expected" class="help" style="margin-top:10px">Expected total: $10.00</p>
+    <div id="design-feedback" class="feedback" role="status">Assign some responsibilities above, then test an order.</div>
+    <ol id="trace" class="trace" aria-label="Step-by-step data trace"></ol>
+    <div class="row"><button id="next-task" type="button" disabled>Next task →</button><button id="show-result" type="button" disabled>Show all tasks</button><span id="trace-position" class="help"></span></div>
+    <div id="receipt-area" style="margin-top:20px" hidden><h3>Customer’s receipt</h3><div id="receipt" class="receipt"></div></div>
+    <p class="help" style="margin-top:16px">A complete receipt checks task coverage. You still need to explain whether each group has a clear purpose. This activity tests valid, non-negative quantities; input validation can be a further responsibility.</p>
+  </section>
+  <section class="cell" aria-labelledby="reflect-title">
+    <div class="cell-head"><span class="cell-no" aria-hidden="true">4</span><div><h2 id="reflect-title">Explain your decomposition</h2><p>Use the trace as evidence. You may revise your groups and test again.</p></div></div>
+    <label for="reflection">Why do your tasks belong together? What information passes between your groups? What changed after testing?</label>
+    <textarea id="reflection" rows="4" maxlength="6000" placeholder="My first smaller job is responsible for… It produces… The next job needs…"></textarea>
+    <details class="reflection"><summary>Connect this to Python</summary><p style="margin-top:12px">A smaller job with a clear purpose may become a function. Identify its inputs, its work and its returned result. Your decomposition groups do not automatically become functions: first check that each group has a coherent responsibility and that you can explain its data dependencies.</p><p>For example, a calculation function could take an order and prices and return the total. The main program can coordinate getting the order, calling the calculation and displaying the receipt.</p></details>
+    <div class="save-line"><button id="download-work" type="button">Download my notes</button><span id="save-status">Work is kept in this browser when local storage is available.</span></div>
+  </section>
+  <footer>Computational thinking · Decomposition · Example 01<br>Keep your prediction, improve your design, and explain your choices.</footer>
+</main>
+<script src="decomposition01.js"></script>
+</body>
+</html>
