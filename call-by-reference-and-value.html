@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="What can a Python function change? Follow names and objects, predict short examples, run Python and explain mutation, local assignment and returned values.">
+  <title>Call by Reference and Call by Value | CP12 / CS12</title>
+  <link rel="stylesheet" href="thinking.css">
+  <link rel="stylesheet" href="function-arguments.css">
+  <script src="function-arguments.js" defer></script>
+</head>
+<body>
+<a class="skip-link" href="#lesson">Skip to the lesson</a>
+<main id="lesson">
+  <nav aria-label="Course navigation"><a href="index.html">← Course home</a><span>CP12 / CS12 · Functions and lists</span></nav>
+  <header class="hero">
+    <div class="eyebrow">Predict · Run · Change · Explain</div>
+    <h1>Call by Reference<br>and Call by Value</h1>
+    <p class="intro">What can a function change? Follow the names, try a small example, and check what the caller sees afterward.</p>
+    <aside class="note"><strong>Watch what changes: the data, or a name?</strong><p>A parameter is a name used inside a function for the data you pass in. At the start of the call, it refers to that same data. Then watch the function: does it edit the list, or make its local name refer to something else?</p><p>Python calls this <strong>passing by assignment</strong>. The rule is the same for lists and numbers.</p></aside>
+    <div class="lesson-links"><a href="#trace">1. Follow the names</a><a href="#examples">2. Run and change Python</a><a href="#words">3. Connect the words</a><a href="#reflect">4. Explain your work</a></div>
+  </header>
+
+  <section class="cell" id="trace" aria-labelledby="trace-title">
+    <div class="cell-head"><span class="cell-no" aria-hidden="true">1</span><div><h2 id="trace-title">Follow the names.</h2><p>The boxes show Python objects: a number or a list. Follow the arrows to see which names refer to the same object.</p></div></div>
+    <label for="trace-mode">Choose a fixed example to trace</label>
+    <select id="trace-mode"><option value="edit">Change an item in a list</option><option value="replace">Assign a different list locally</option><option value="number">Assign a different number locally</option></select>
+    <div class="trace-layout">
+      <div><h3>The example</h3><pre id="trace-code" class="python-block" tabindex="0"></pre></div>
+      <div><div class="trace-heading"><h3>Names → objects</h3><span id="trace-progress" class="step-label">Step 1 of 4</span></div><div id="name-map" class="name-map" aria-label="Names and the objects they refer to"></div><p id="trace-caption" class="trace-caption" role="status"></p></div>
+    </div>
+    <div class="row"><button id="trace-back" type="button">← Previous step</button><button id="trace-next" type="button" class="primary">Next step →</button><button id="trace-reset" type="button">Start again</button></div>
+    <p class="help trace-help">These pictures follow the fixed example shown here. Step through it, then try your own changes in the Python editor below.</p>
+  </section>
+
+  <section class="cell" id="examples" aria-labelledby="examples-title">
+    <div class="cell-head"><span class="cell-no" aria-hidden="true">2</span><div><h2 id="examples-title">Predict. Run. Change one thing.</h2><p>Start with examples 1–3, then choose another when you are ready. The caller is the code that makes the function call.</p></div></div>
+    <label for="example-select">Choose a Python experiment</label>
+    <select id="example-select"></select>
+    <h3 id="example-title" class="example-heading"></h3>
+    <p id="example-intro"></p>
+    <label for="prediction">Before running: what will print? Will the original number or list change?</label>
+    <textarea id="prediction" rows="3" placeholder="I predict… because…"></textarea>
+    <div class="experiment-toolbar"><label for="python-code">Python · edit this code</label><div class="row"><button id="restore-code" type="button">Restore starter</button><button id="run-code" type="button" class="primary">Run Python</button><button id="stop-code" type="button" hidden>Stop</button></div></div>
+    <div class="editor-layout">
+      <div><textarea id="python-code" class="python-editor" spellcheck="false" autocapitalize="off" autocomplete="off" aria-describedby="editor-help"></textarea><p id="editor-help" class="help">Change the values in the code to try a new case. Tab inserts four spaces; Escape then Tab moves to the next control. Each run starts fresh.</p></div>
+      <div class="output-box"><h3>Actual output</h3><pre id="python-output" tabindex="0">Your output will appear here.</pre><p id="run-status" role="status">Not run yet.</p></div>
+    </div>
+    <aside class="change-prompt"><strong>Make a change</strong><p id="change-task"></p></aside>
+    <details id="starter-explanation"><summary>Think about the starter after trying it</summary><p id="example-explanation"></p></details>
+    <label for="explanation" class="explain-label">After testing: what changed, and which line caused it?</label>
+    <textarea id="explanation" rows="3" placeholder="The line… changes… My new test showed…"></textarea>
+    <details class="history"><summary id="history-title">Earlier runs on this browser</summary><div id="run-history"></div></details>
+  </section>
+
+  <section class="cell" id="words" aria-labelledby="words-title">
+    <div class="cell-head"><span class="cell-no" aria-hidden="true">3</span><div><h2 id="words-title">Connect the words to your examples.</h2><p>Match each term to something you observed. Use passing by assignment to describe Python’s rule.</p></div></div>
+    <div class="term-grid">
+      <article><h3>Call by value</h3><p>The function receives a copy of the value you pass in. Giving the parameter a different value leaves the caller’s variable unchanged. The copied value can itself be an object reference; this does not always copy the object’s contents.</p></article>
+      <article><h3>Call by reference</h3><p>The parameter acts as another name for the caller’s variable. Assigning a different value to that parameter can also change the variable outside the function.</p></article>
+      <article class="python-term"><h3>Python: passing by assignment</h3><p>The parameter starts as another name for the supplied object. It can change the contents of a shared list. Giving the local name another object leaves the caller’s name referring to its original object.</p></article>
+    </div>
+    <div class="comparison-table"><table><caption>Three operations to distinguish</caption><thead><tr><th scope="col">Python code</th><th scope="col">What it changes</th><th scope="col">The word</th></tr></thead><tbody><tr><td><code>items[0] = 7</code></td><td>An item inside the existing list</td><td>Mutation</td></tr><tr><td><code>items = [7]</code></td><td>What the local name <code>items</code> refers to</td><td>Rebinding</td></tr><tr><td><code>scores = make_new(scores)</code></td><td>The caller stores the returned object in <code>scores</code></td><td>Return and assign</td></tr></tbody></table></div>
+    <p>A list is <strong>mutable</strong>: you can change its contents while keeping the same list. Integers and strings are <strong>immutable</strong>: those objects cannot be edited in place. A function may return an answer whether or not it also changes a list.</p>
+    <p class="help">Read the <a href="https://docs.python.org/3/faq/programming.html#how-do-i-write-a-function-with-output-parameters-call-by-reference" target="_blank" rel="noopener">official Python explanation of passing by assignment</a> and <a href="https://docs.python.org/3/faq/programming.html#why-did-changing-list-y-also-change-list-x" target="_blank" rel="noopener">shared lists and assignment</a>.</p>
+  </section>
+
+  <section class="cell" id="reflect" aria-labelledby="reflect-title">
+    <div class="cell-head"><span class="cell-no" aria-hidden="true">4</span><div><h2 id="reflect-title">Explain one example of your own.</h2><p>Choose “Your turn” in the Python experiments to write and call your own functions.</p></div></div>
+    <label for="reflection">Choose a line from your code. Explain whether it changes a shared list or makes a local name refer to something else.</label>
+    <textarea id="reflection" rows="4" placeholder="In my function… After the call… I know because…"></textarea>
+    <div class="save-line"><button id="download-notes" type="button" class="primary">Download my work</button><span id="save-status" role="status">Your work is kept on this browser when saving is available.</span></div>
+    <p class="help">The download includes your predictions, code, recent outputs and explanations. Hand it in using your usual class method; this page does not submit it automatically.</p>
+  </section>
+  <footer><p>CP12 / CS12 · Change the code, test a new case, explain what happened.</p><details><summary>Python and saved work</summary><p>Real Python runs on your device with <a href="https://pyodide.org/en/stable/usage/webworker.html" target="_blank" rel="noopener">Pyodide</a>. The first Run needs an internet connection and can take a moment. A shared browser profile also shares its saved work. Download your notes before switching devices.</p><button id="clear-notes" type="button">Clear this browser’s work for this lesson</button></details></footer>
+  <noscript><p class="note">Enable JavaScript to use the trace, editable Python and saved notes. The definitions and comparison table remain available to read.</p></noscript>
+</main>
+</body>
+</html>
