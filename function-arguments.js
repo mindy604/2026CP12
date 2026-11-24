@@ -46,14 +46,110 @@ const examples = [
     why: 'In the starter, text is assigned a new string locally. message still refers to "Hello". The same passing-by-assignment model explains the string, integer and list examples.'
   },
   {
-    id: 'grid', title: '7 · Going further: a shallow grid copy',
+    "id": "float",
+    "title": "7 · float: a decimal number",
+    "intro": "A float stores a number with a decimal point. Will a local calculation change price?",
+    "code": "def add_fee(amount):\n    amount = amount + 0.5\n    print(\"Inside:\", amount)\n    return amount\n\nprice = 2.5\nadd_fee(price)\nprint(\"Outside:\", price)\n",
+    "change": "Store the returned answer in price. Try another starting price.",
+    "why": "Floats are immutable. The calculation gives the local name a new value. The caller changes price only if it assigns the returned answer."
+  },
+  {
+    "id": "bool",
+    "title": "8 · bool: True or False",
+    "intro": "A bool stores True or False. not reverses it. Follow both names.",
+    "code": "def flip(flag):\n    flag = not flag\n    print(\"Inside:\", flag)\n    return flag\n\nready = False\nflip(ready)\nprint(\"Outside:\", ready)\n",
+    "change": "Store the returned answer in ready. Then start with True and predict again.",
+    "why": "Booleans are immutable. The local name is reassigned; the caller’s name keeps its value unless the caller stores the result."
+  },
+  {
+    "id": "tuple",
+    "title": "9 · tuple: a fixed sequence",
+    "intro": "A tuple uses parentheses. Its positions cannot be replaced in place.",
+    "code": "def new_pair(pair):\n    pair = (9, pair[1])\n    print(\"Inside:\", pair)\n    return pair\n\npoint = (2, 3)\nnew_pair(point)\nprint(\"Outside:\", point)\n",
+    "change": "Store the returned tuple in point. Then try pair[0] = 9 inside the function and read the error.",
+    "why": "The starter creates a new tuple locally. Indexed assignment to a tuple raises TypeError. A tuple can contain a mutable list; that inner list can still change."
+  },
+  {
+    "id": "dict",
+    "title": "10 · dict: labelled values",
+    "intro": "A dictionary stores key–value pairs. Use a key such as \"score\" to choose a value.",
+    "code": "def change_score(record):\n    record[\"score\"] = 7\n    print(\"Inside:\", record)\n\nstudent = {\"name\": \"Mei\", \"score\": 4}\nchange_score(student)\nprint(\"Outside:\", student)\n",
+    "change": "Try record = {\"score\": 9} instead of the indexed edit. Predict what student will show.",
+    "why": "Dictionaries are mutable. Updating a key changes the shared dictionary. Assigning a new dictionary to record would reassign only the local name."
+  },
+  {
+    "id": "set",
+    "title": "11 · set: unique items",
+    "intro": "A set keeps unique items. add() puts an item in the shared set. Sets have no index 0.",
+    "code": "def add_colour(colours):\n    colours.add(\"blue\")\n    print(\"Inside:\", sorted(colours))\n\nchoices = {\"red\"}\nadd_colour(choices)\nprint(\"Outside:\", sorted(choices))\n",
+    "change": "Try adding \"red\" instead. Then replace the add line with colours = {\"green\"}.",
+    "why": "Sets are mutable. add() edits the shared set; a duplicate is kept only once. sorted() is used just to print the items in a predictable order."
+  },
+  {
+    "id": "complex",
+    "title": "12 · Optional: complex numbers",
+    "intro": "A complex number has a real part and an imaginary part, written with j in Python.",
+    "code": "def shift(number):\n    number = number + 1j\n    print(\"Inside:\", number)\n    return number\n\nvalue = 2 + 3j\nshift(value)\nprint(\"Outside:\", value)\n",
+    "change": "Store the returned answer in value. Try a different starting number.",
+    "why": "Complex numbers are immutable. The calculation reassigns the local name and leaves the caller’s name unchanged."
+  },
+  {
+    "id": "frozenset",
+    "title": "13 · Optional: frozenset",
+    "intro": "A frozenset is a set whose items cannot be added or removed. union() returns a set containing both groups.",
+    "code": "def with_blue(colours):\n    colours = colours.union({\"blue\"})\n    print(\"Inside:\", sorted(colours))\n    return colours\n\nchoices = frozenset({\"red\"})\nwith_blue(choices)\nprint(\"Outside:\", sorted(choices))\n",
+    "change": "Store the returned answer in choices. Then try colours.add(\"blue\") and read the error.",
+    "why": "A frozenset is immutable. union() returns a new frozenset; it does not edit the original. It has no add() method."
+  },
+  {
+    "id": "range",
+    "title": "14 · Optional: range",
+    "intro": "A range describes a sequence of integers. list() below makes its numbers visible in the output.",
+    "code": "def longer(numbers):\n    numbers = range(5)\n    print(\"Inside:\", list(numbers))\n    return numbers\n\nsteps = range(3)\nlonger(steps)\nprint(\"Outside:\", list(steps))\n",
+    "change": "Store the returned range in steps. Then try numbers[0] = 9 and read the error.",
+    "why": "Ranges are immutable. Assigning range(5) changes only the local name. list() creates a list for display; it does not edit the range."
+  },
+  {
+    "id": "bytes",
+    "title": "15 · Optional: bytes",
+    "intro": "Bytes store binary data. The b prefix makes a bytes value; its numbered items cannot be replaced.",
+    "code": "def add_mark(data):\n    data = data + b\"!\"\n    print(\"Inside:\", data)\n    return data\n\nmessage = b\"Hi\"\nadd_mark(message)\nprint(\"Outside:\", message)\n",
+    "change": "Store the returned answer in message. Try data[0] = 66 and read the error.",
+    "why": "Bytes are immutable. Joining bytes creates a new value and reassigns the local name."
+  },
+  {
+    "id": "bytearray",
+    "title": "16 · Optional: bytearray",
+    "intro": "A bytearray is an editable sequence of byte values, from 0 to 255.",
+    "code": "def change_first(data):\n    data[0] = 9\n    print(\"Inside:\", list(data))\n\nvalues = bytearray([1, 2, 3])\nchange_first(values)\nprint(\"Outside:\", list(values))\n",
+    "change": "Replace the edit with data = bytearray([9]). Predict the outside values.",
+    "why": "A bytearray is mutable. Indexed assignment changes the shared object. list() is used only to display its numbers clearly."
+  },
+  {
+    "id": "memoryview",
+    "title": "17 · Optional: memoryview",
+    "intro": "A memoryview gives access to existing binary data without copying it. This view uses a writable bytearray.",
+    "code": "def change_first(view):\n    view[0] = 9\n    print(\"Inside:\", list(view))\n\nvalues = bytearray([1, 2, 3])\nwindow = memoryview(values)\nchange_first(window)\nprint(\"Outside:\", list(values))\n",
+    "change": "Use values = bytes([1, 2, 3]) instead. Predict whether the view is writable, then run.",
+    "why": "A view of a writable bytearray can edit the underlying data. A view of immutable bytes is read-only, so the same assignment raises TypeError."
+  },
+  {
+    "id": "none",
+    "title": "18 · None: no value yet",
+    "intro": "None represents no value. Its type is called NoneType. Does a local assignment replace result?",
+    "code": "def fill_in(value):\n    value = \"Ready\"\n    print(\"Inside:\", value)\n    return value\n\nresult = None\nfill_in(result)\nprint(\"Outside:\", result)\n",
+    "change": "Store the returned answer in result. Compare this with a function that has no return statement.",
+    "why": "None cannot be edited. The local assignment makes value refer to a string; result still refers to None. A function with no explicit return returns None."
+  },
+  {
+    id: 'grid', title: '19 · Going further: a shallow grid copy',
     intro: 'For CS12 or after the grid work: a new outer list can still share its row lists.',
     code: 'def change_seat(plan):\n    plan[0][1] = "Mei"\n\nseats = [["Ava", ""], ["", "Ben"]]\npreview = seats.copy()\nchange_seat(preview)\nprint("Original:", seats)\nprint("Preview:", preview)\n',
     change: 'Create a new outer list and copy each row before editing. Write the loop yourself, then check that the original stays unchanged.',
     why: 'A shallow outer copy still refers to the original rows. The starter edits a shared row. For this grid of strings, copying each row creates separate row lists.'
   },
   {
-    id: 'practice', title: '8 · Your turn: write and call two functions',
+    id: 'practice', title: '20 · Your turn: write and call two functions',
     intro: 'Use your own small list. Plan each function’s inputs, returned answer and effect on the original.',
     code: '# 1. Write a function that changes one item in the supplied list.\n# 2. Write a function that returns an edited copy and protects the original.\n# Write a call for each and print the original list afterward.\n# Try a different list/value and explain the two effects.\n\n',
     change: 'Test a second list and a different value. Point to the line that edits an object and the line that assigns a name.',
@@ -96,6 +192,60 @@ function traceSnapshot(mode, requestedStep) {
   };
 }
 
+
+// A plain-text report uses the exact saved code/output, never a model answer.
+function buildWorkReport(work, downloadedAt) {
+  const divider = '-'.repeat(64);
+  const heading = text => [divider, text, divider];
+  const filled = (value, fallback = '[Not recorded]') => value?.trim() ? value : fallback;
+  const worked = examples.filter(example => {
+    const entry = work.notebooks[example.id];
+    return entry && (entry.code !== example.code || entry.prediction.trim() || entry.explanation.trim() || work.runs.some(run => run.exampleId === example.id));
+  });
+  const lines = [
+    ...heading('CALL BY REFERENCE AND CALL BY VALUE'),
+    'MY PYTHON EXPERIMENTS', 'Name: ____________________',
+    `Downloaded: ${downloadedAt}`, '',
+    `Examples with saved work: ${worked.length} of ${examples.length}`,
+    `Recorded tests: ${work.runs.length} (up to the most recent 60 are kept)`,
+    'A recorded test is evidence of a run, not an automatic grade.', ''
+  ];
+  if (!worked.length) lines.push('No experiment work recorded yet. Predict, run some code, and download again.', '');
+  for (const example of worked) {
+    const entry = work.notebooks[example.id];
+    const tests = work.runs.filter(run => run.exampleId === example.id);
+    const matching = [...tests].reverse().find(run => run.code === entry.code);
+    lines.push(...heading(example.title), '',
+      'MY PREDICTION', filled(entry.prediction), '',
+      'MY CURRENT CODE', filled(entry.code, '[No code written]'), '',
+      'OUTPUT FOR MY CURRENT CODE');
+    if (matching) {
+      lines.push(`Test recorded: ${matching.time}`, matching.success ? 'Status: Completed' : 'Status: Stopped or error',
+        filled(matching.output, '[No text printed. Use print() to show a result.]'));
+    } else {
+      lines.push(tests.length ? 'This version has not been run. Earlier output belongs to the code in TEST HISTORY below.' : 'Not run yet. No actual output recorded.');
+    }
+    lines.push('', 'MY EXPLANATION', filled(entry.explanation), '');
+    const older = tests.filter(run => run !== matching);
+    if (older.length) {
+      lines.push('TEST HISTORY — EARLIER OR DIFFERENT CODE', '');
+      older.forEach((run, index) => lines.push(
+        `--- Test ${index + 1} ---`, `Recorded: ${run.time}`,
+        run.success ? 'Status: Completed' : 'Status: Stopped or error', '',
+        'Prediction at this test:', filled(run.prediction), '',
+        'Code at this test:', filled(run.code, '[No code]'), '',
+        'Actual output / error:', filled(run.output, '[No text printed. Use print() to show a result.]'), ''
+      ));
+    }
+  }
+  lines.push(...heading('MY FINAL REFLECTION'), filled(work.reflection), '',
+    ...heading('EXAMPLES WITH NO SAVED WORK'));
+  const untouched = examples.filter(example => !worked.includes(example));
+  lines.push(untouched.length ? untouched.map(example => example.title).join('\n') : 'All examples have saved work.', '',
+    'End of report. Hand in this text file using your usual class method.', '');
+  return lines.join('\n');
+}
+
 // Browser setup. The data and fixed trace above are also checked independently.
 const $ = id => document.getElementById(id);
 const storageKey = 'cp12-function-arguments-v1';
@@ -114,7 +264,7 @@ const state = {
   })),
   trace: { mode: Object.hasOwn(traceCases, restored?.trace?.mode) ? restored.trace.mode : 'edit', step: Math.max(0, Math.min(3, Math.trunc(Number(restored?.trace?.step) || 0))) },
   reflection: typeof restored?.reflection === 'string' ? restored.reflection.slice(0, 4000) : '',
-  runs: Array.isArray(restored?.runs) ? restored.runs.filter(run => validIds.has(run?.exampleId) && typeof run.code === 'string' && typeof run.output === 'string').slice(-16).map(run => ({ exampleId: run.exampleId, code: run.code.slice(0, 20000), prediction: String(run.prediction || '').slice(0, 4000), output: run.output.slice(0, 20000), success: run.success === true, time: String(run.time || '') })) : []
+  runs: Array.isArray(restored?.runs) ? restored.runs.filter(run => validIds.has(run?.exampleId) && typeof run.code === 'string' && typeof run.output === 'string').slice(-60).map(run => ({ exampleId: run.exampleId, code: run.code.slice(0, 20000), prediction: String(run.prediction || '').slice(0, 4000), output: run.output.slice(0, 20000), success: run.success === true, time: String(run.time || '') })) : []
 };
 let currentId = state.selected;
 let saveTimer;
@@ -209,7 +359,7 @@ function finishRun(output, success) {
   $('python-output').textContent = output;
   $('run-status').textContent = success ? 'Run complete. Compare it with your prediction, then try a change.' : 'Read the last line of the message. Change or restore the code, then try again.';
   state.runs.push({ exampleId: run.exampleId, code: run.code, prediction: run.prediction, output, success, time: new Date().toISOString() });
-  state.runs = state.runs.slice(-16);
+  state.runs = state.runs.slice(-60);
   const returnFocus = document.activeElement === $('stop-code');
   setBusy(false); renderHistory(); save();
   if (returnFocus) $('run-code').focus();
@@ -288,15 +438,8 @@ $('python-code').addEventListener('keydown', event => {
 
 $('download-notes').addEventListener('click', () => {
   clearTimeout(saveTimer); save();
-  const lines = ['CALL BY REFERENCE AND CALL BY VALUE — MY PYTHON WORK', `Downloaded: ${new Date().toLocaleString()}`, '', 'Fixed trace:', traceCases[state.trace.mode].code, `Trace step: ${state.trace.step + 1}`, ''];
-  for (const example of examples) {
-    const entry = state.notebooks[example.id];
-    lines.push(example.title, 'Prediction:', entry.prediction || '(not recorded)', 'Current code:', entry.code, 'Explanation:', entry.explanation || '(not recorded)', '');
-  }
-  lines.push('RECENT RUNS (last 16)');
-  for (const run of state.runs) lines.push('', examples.find(entry => entry.id === run.exampleId).title, run.time, run.success ? 'Completed' : 'Stopped or error', 'Prediction at run:', run.prediction, 'Code at run:', run.code, 'Output:', run.output);
-  lines.push('', 'MY REFLECTION', state.reflection || '(not recorded)', '', 'These are my notes and experiments, not an automatic achievement grade.');
-  const url = URL.createObjectURL(new Blob([lines.join('\n')], { type: 'text/plain;charset=utf-8' }));
+  const report = buildWorkReport(state, new Date().toLocaleString());
+  const url = URL.createObjectURL(new Blob([report], { type: 'text/plain;charset=utf-8' }));
   const link = document.createElement('a'); link.href = url; link.download = 'function-arguments-my-work.txt'; document.body.append(link); link.click(); link.remove();
   setTimeout(() => URL.revokeObjectURL(url), 10000);
   $('save-status').textContent = 'Downloaded. Hand in the text file using your usual class method.';

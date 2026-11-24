@@ -7,7 +7,7 @@
   <title>Call by Reference and Call by Value | CP12 / CS12</title>
   <link rel="stylesheet" href="thinking.css">
   <link rel="stylesheet" href="function-arguments.css">
-  <script src="function-arguments.js" defer></script>
+  <script src="function-arguments.js?v=20261123-types" defer></script>
 </head>
 <body>
 <a class="skip-link" href="#lesson">Skip to the lesson</a>
@@ -17,7 +17,7 @@
     <div class="eyebrow">Predict · Run · Change · Explain</div>
     <h1>Call by Reference<br>and Call by Value</h1>
     <p class="intro">What can a function change? Follow the names, try a small example, and check what the caller sees afterward.</p>
-    <aside class="note"><strong>Watch what changes: the data, or a name?</strong><p>A parameter is a name used inside a function for the data you pass in. At the start of the call, it refers to that same data. Then watch the function: does it edit the list, or make its local name refer to something else?</p><p>Python calls this <strong>passing by assignment</strong>. The rule is the same for lists and numbers.</p></aside>
+    <aside class="note"><strong>Watch what changes: the data, or a name?</strong><p>A parameter is a name used inside a function for the data you pass in. At the start of the call, it refers to that same data. Then watch the function: does it edit the list, or make its local name refer to something else?</p><p>Python calls this <strong>passing by assignment</strong>. The rule is the same for every data type, including strings.</p></aside>
     <div class="lesson-links"><a href="#trace">1. Follow the names</a><a href="#examples">2. Run and change Python</a><a href="#words">3. Connect the words</a><a href="#reflect">4. Explain your work</a></div>
   </header>
 
@@ -34,12 +34,12 @@
   </section>
 
   <section class="cell" id="examples" aria-labelledby="examples-title">
-    <div class="cell-head"><span class="cell-no" aria-hidden="true">2</span><div><h2 id="examples-title">Predict. Run. Change one thing.</h2><p>Start with examples 1–3, then choose another when you are ready. The caller is the code that makes the function call.</p></div></div>
-    <label for="example-select">Choose a Python experiment</label>
+    <div class="cell-head"><span class="cell-no" aria-hidden="true">2</span><div><h2 id="examples-title">Predict. Run. Change one thing.</h2><p>Start with examples 1–3. Try string in example 6, then choose another type when you are ready. Examples 12–17 are optional. The caller is the code that makes the function call.</p></div></div>
+    <label for="example-select">Choose a Python experiment (including string, float and bool)</label>
     <select id="example-select"></select>
     <h3 id="example-title" class="example-heading"></h3>
     <p id="example-intro"></p>
-    <label for="prediction">Before running: what will print? Will the original number or list change?</label>
+    <label for="prediction">Before running: what will print? Will the original data change?</label>
     <textarea id="prediction" rows="3" placeholder="I predict… because…"></textarea>
     <div class="experiment-toolbar"><label for="python-code">Python · edit this code</label><div class="row"><button id="restore-code" type="button">Restore starter</button><button id="run-code" type="button" class="primary">Run Python</button><button id="stop-code" type="button" hidden>Stop</button></div></div>
     <div class="editor-layout">
@@ -55,6 +55,7 @@
 
   <section class="cell" id="words" aria-labelledby="words-title">
     <div class="cell-head"><span class="cell-no" aria-hidden="true">3</span><div><h2 id="words-title">Connect the words to your examples.</h2><p>Match each term to something you observed. Use passing by assignment to describe Python’s rule.</p></div></div>
+    <h3>Data types at a glance</h3><p>Use the experiment number in the menu above to try each type. A local assignment such as <code>value = something_else</code> leaves the caller’s name unchanged for every type.</p><div class="comparison-table"><table><caption>Common Python data types</caption><thead><tr><th scope="col">Type</th><th scope="col">Example</th><th scope="col">Can it change in place?</th><th scope="col">Experiment</th></tr></thead><tbody><tr><td><code>int</code></td><td><code>3</code></td><td>No</td><td>1</td></tr><tr><td><code>list</code></td><td><code>[4, 2, 5]</code></td><td>Yes</td><td>2–5</td></tr><tr><td><code>str (string)</code></td><td><code>&quot;Hello&quot;</code></td><td>No</td><td>6</td></tr><tr><td><code>float</code></td><td><code>2.5</code></td><td>No</td><td>7</td></tr><tr><td><code>bool</code></td><td><code>True / False</code></td><td>No</td><td>8</td></tr><tr><td><code>tuple</code></td><td><code>(2, 3)</code></td><td>No: its positions are fixed</td><td>9</td></tr><tr><td><code>dict</code></td><td><code>{&quot;score&quot;: 4}</code></td><td>Yes</td><td>10</td></tr><tr><td><code>set</code></td><td><code>{&quot;red&quot;}</code></td><td>Yes</td><td>11</td></tr><tr><td><code>NoneType</code></td><td><code>None</code></td><td>No</td><td>18</td></tr></tbody></table></div><p><strong>String reminder:</strong> <code>text[0]</code> reads one character. <code>text[0] = "H"</code> gives an error. Build a new string and return it instead.</p><p>A tuple can hold a list. You cannot replace the tuple’s positions, but you can still edit that inner list.</p><details><summary>More built-in types — optional reference</summary><p>These examples extend the same rule to less familiar types. You do not need to learn them all today.</p><div class="comparison-table"><table><caption>Other built-in data types</caption><thead><tr><th scope="col">Type</th><th scope="col">Example</th><th scope="col">Can it change in place?</th><th scope="col">Experiment</th></tr></thead><tbody><tr><td><code>complex</code></td><td><code>2 + 3j</code></td><td>No</td><td>12</td></tr><tr><td><code>frozenset</code></td><td><code>frozenset({&quot;red&quot;})</code></td><td>No</td><td>13</td></tr><tr><td><code>range</code></td><td><code>range(3)</code></td><td>No</td><td>14</td></tr><tr><td><code>bytes</code></td><td><code>b&quot;Hi&quot;</code></td><td>No</td><td>15</td></tr><tr><td><code>bytearray</code></td><td><code>bytearray([1, 2])</code></td><td>Yes</td><td>16</td></tr><tr><td><code>memoryview</code></td><td><code>memoryview(data)</code></td><td>Only if the underlying data is writable</td><td>17</td></tr></tbody></table></div></details><p class="help">See the <a href="https://docs.python.org/3/library/stdtypes.html" target="_blank" rel="noopener">Python built-in types reference</a>. Python also has types for functions, classes and other objects; this table covers the main built-in data values.</p>
     <div class="term-grid">
       <article><h3>Call by value</h3><p>The function receives a copy of the value you pass in. Giving the parameter a different value leaves the caller’s variable unchanged. The copied value can itself be an object reference; this does not always copy the object’s contents.</p></article>
       <article><h3>Call by reference</h3><p>The parameter acts as another name for the caller’s variable. Assigning a different value to that parameter can also change the variable outside the function.</p></article>
@@ -67,10 +68,10 @@
 
   <section class="cell" id="reflect" aria-labelledby="reflect-title">
     <div class="cell-head"><span class="cell-no" aria-hidden="true">4</span><div><h2 id="reflect-title">Explain one example of your own.</h2><p>Choose “Your turn” in the Python experiments to write and call your own functions.</p></div></div>
-    <label for="reflection">Choose a line from your code. Explain whether it changes a shared list or makes a local name refer to something else.</label>
+    <label for="reflection">Choose a line from your code. Explain whether it edits shared data or makes a local name refer to something else.</label>
     <textarea id="reflection" rows="4" placeholder="In my function… After the call… I know because…"></textarea>
     <div class="save-line"><button id="download-notes" type="button" class="primary">Download my work</button><span id="save-status" role="status">Your work is kept on this browser when saving is available.</span></div>
-    <p class="help">The download includes your predictions, code, recent outputs and explanations. Hand it in using your usual class method; this page does not submit it automatically.</p>
+    <p class="help">The text download has headings and dividers. It includes the examples you worked on, your exact code and recorded output, earlier tests, explanations and reflection. Code you changed without running is labelled “not run”. Hand it in using your usual class method; this page does not submit it automatically.</p>
   </section>
   <footer><p>CP12 / CS12 · Change the code, test a new case, explain what happened.</p><details><summary>Python and saved work</summary><p>Real Python runs on your device with <a href="https://pyodide.org/en/stable/usage/webworker.html" target="_blank" rel="noopener">Pyodide</a>. The first Run needs an internet connection and can take a moment. A shared browser profile also shares its saved work. Download your notes before switching devices.</p><button id="clear-notes" type="button">Clear this browser’s work for this lesson</button></details></footer>
   <noscript><p class="note">Enable JavaScript to use the trace, editable Python and saved notes. The definitions and comparison table remain available to read.</p></noscript>
